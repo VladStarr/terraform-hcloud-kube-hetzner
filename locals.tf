@@ -832,7 +832,10 @@ cloudinit_write_files_common = <<EOT
     #!/bin/bash
     set -euxo pipefail
 
-    sleep 60
+    until nmcli -f name,state connection show | grep eth0 | grep -q "activated"; do
+      echo "Waiting for eth0 connection to become active..."
+      sleep 1
+    done
 
     INTERFACE=$(ip link show | awk '/^3:/{print $2}' | sed 's/://g')
     MAC=$(cat /sys/class/net/$INTERFACE/address)
@@ -844,9 +847,6 @@ cloudinit_write_files_common = <<EOT
     ip link set $INTERFACE down
     ip link set $INTERFACE name eth1
     ip link set eth1 up
-
-    # get all networkmanager connections
-    nmcli -g GENERAL.CONNECTION
 
     eth0_connection=$(nmcli -g GENERAL.CONNECTION device show eth0)
     nmcli connection modify "$eth0_connection" \
