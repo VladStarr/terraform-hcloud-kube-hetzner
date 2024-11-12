@@ -832,7 +832,7 @@ cloudinit_write_files_common = <<EOT
     #!/bin/bash
     set -euo pipefail
 
-    sleep 11
+    sleep 20
 
     INTERFACE=$(ip link show | awk '/^3:/{print $2}' | sed 's/://g')
     MAC=$(cat /sys/class/net/$INTERFACE/address)
