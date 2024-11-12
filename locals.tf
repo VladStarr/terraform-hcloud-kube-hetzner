@@ -832,7 +832,7 @@ cloudinit_write_files_common = <<EOT
     #!/bin/bash
     set -euxo pipefail
 
-    sleep 20
+    sleep 60
 
     INTERFACE=$(ip link show | awk '/^3:/{print $2}' | sed 's/://g')
     MAC=$(cat /sys/class/net/$INTERFACE/address)
@@ -847,7 +847,6 @@ cloudinit_write_files_common = <<EOT
 
     # get all networkmanager connections
     nmcli -g GENERAL.CONNECTION
-    sleep 10
 
     eth0_connection=$(nmcli -g GENERAL.CONNECTION device show eth0)
     nmcli connection modify "$eth0_connection" \
