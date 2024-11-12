@@ -845,12 +845,14 @@ cloudinit_write_files_common = <<EOT
     ip link set $INTERFACE name eth1
     ip link set eth1 up
 
+    # get all networkmanager connections
+    nmcli -g GENERAL.CONNECTION
+    sleep 10
+
     eth0_connection=$(nmcli -g GENERAL.CONNECTION device show eth0)
     nmcli connection modify "$eth0_connection" \
       con-name eth0 \
       connection.interface-name eth0
-
-    sleep 10
 
     eth1_connection=$(nmcli -g GENERAL.CONNECTION device show eth1)
     nmcli connection modify "$eth1_connection" \
