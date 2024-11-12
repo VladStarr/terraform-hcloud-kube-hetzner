@@ -830,7 +830,7 @@ cloudinit_write_files_common = <<EOT
 - path: /etc/cloud/rename_interface.sh
   content: |
     #!/bin/bash
-    set -euo pipefail
+    set -euxo pipefail
 
     sleep 20
 
@@ -849,6 +849,8 @@ cloudinit_write_files_common = <<EOT
     nmcli connection modify "$eth0_connection" \
       con-name eth0 \
       connection.interface-name eth0
+
+    sleep 10
 
     eth1_connection=$(nmcli -g GENERAL.CONNECTION device show eth1)
     nmcli connection modify "$eth1_connection" \
